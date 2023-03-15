@@ -534,7 +534,7 @@ int main()
 				x = Delete(&arr1, index);
 				printf("Element that was Deleted: %d\n", x);
 				break;
-			case 3: printf("eneter element to search: ");
+			case 3: printf("Enter element to search: ");
 				scanf_s("%d", &x);
 				index = LinearSearch(arr1, x);
 				printf("Element is at index: %d\n", index);

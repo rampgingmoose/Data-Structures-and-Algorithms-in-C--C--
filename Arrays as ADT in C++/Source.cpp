@@ -1,6 +1,6 @@
-#include "iostream"
-#include "stdio.h"
-#include "stdlib.h"
+#include <iostream>
+#include <cstdio>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -14,9 +14,18 @@ private:
 	void Swap(int *x, int *y);
 
 public:
-	Array();
-	Array(int size);
-	void Create();
+	Array()
+	{
+		size = 10;
+		length = 0;
+		A= new int[size];
+	}
+	Array(int sz)
+	{
+		size = sz;
+		length = 0;
+		A = new int [size];
+	}
 	void Display();
 	void Append(int x);
 	void Insert(int index, int x);
@@ -39,40 +48,16 @@ public:
 	void InsertIntoSortedArray(int key);
 	bool isArraySorted();
 	void ArrangePositiveAndNegatives();
-	Array* MergeArrays(Array *arr2);
-	Array* Union(Array *arr2);
-	Array* Intersection(Array *arr2);
-	Array* Difference(Array * arr2);
+	Array* MergeArrays(Array arr2);
+	Array* Union(Array arr2);
+	Array* Intersection(Array arr2);
+	Array* Difference(Array arr2);
 
-	~Array();
+	~Array()
+	{
+		delete [] A;
+	}
 };
-
-Array::Array()
-{
-	size = 10;
-	length = 0;
-	A= new int[size];
-}
-Array::Array(int sz)
-{
-	size = sz;
-	length = 0;
-	A = new int [size];
-}
-
-void Array::Create()
-{
-	A[0] = 4;
-	A[1] = 8;
-	A[2] = 13;
-	A[3] = 16;
-	A[4] = 20;
-}
-
-Array::~Array()
-{
-	delete [] A;
-}
 
 void Array::Display()
 {
@@ -383,33 +368,129 @@ void Array::ArrangePositiveAndNegatives()
 	}
 }
 
-Array* Array::MergeArrays(Array *arr2)
+Array* Array::MergeArrays(Array arr2)
 {
 	int i = 0, j = 0, k =0;
-	auto arr3 = new Array[10];
+	Array *arr3 = new Array[length + arr2.length];
 
-	while(i < length && j < arr2->length)
+	int m = length;
+	int n = arr2.length;
+
+	while(i < m && j < n)
 	{
-		if(A[i] < arr2->A[j])
+		if(A[i] < arr2.A[j])
 		{
 			arr3[k++] = A[i++];
 		}
 		else
 		{
-			arr3[k++] = arr2->A[j++];
+			arr3[k++] = arr2.A[j++];
 		}
 	}
-	for(;i < length; i++)
+	for(;i < m; i++)
 	{
 		arr3[k++] = A[i];
 	}
-	for(;i < arr2->length; j++)
+	for(;j < n; j++)
 	{
-		arr3[k++] = arr2->A[j];
+		arr3[k++] = arr2.A[j];
 	}
 
-	arr3[length] = length + arr2->length;
-	arr3[size] = 10;
+	return arr3;
+}
+
+Array* Array::Union(Array arr2)
+{
+	int i = 0, j = 0, k = 0;
+	Array* arr3 = new Array[length + arr2.length];
+	int m = length;
+	int n = arr2.length;
+
+	while(i < m && j < n)
+	{
+		if(A[i] < arr2.A[j])
+		{
+			arr3->A[k++] = A[i++];
+		}
+		else if(arr2.A[j] < A[i])
+		{
+			arr3->A[k++] = arr2.A[j++];
+		}
+		else
+		{
+			arr3->A[k++] = A[i++];
+			j++;
+		}
+	}
+
+	for(; i < m; i++)
+	{
+		arr3->A[k++] = A[i];
+	}
+	for(; j < n; j++)
+	{
+		arr3->A[k++] = A[j];
+	}
+
+	return arr3;
+}
+
+Array* Array::Intersection(Array arr2)
+{
+	int i =0, j = 0, k = 0;
+	Array* arr3 = new Array(length + arr2.length);
+	int m = length;
+	int n = arr2.length;
+
+	while(i < m && j < n)
+	{
+		if(A[i] < arr2.A[j])
+		{
+			i++;
+		}
+		else if(arr2.A[j] < A[i])
+		{
+			j++;
+		}
+		else
+		{
+			arr3->A[k++] = A[i++];
+			j++;
+		}
+	}
+
+	return arr3;
+}
+
+Array* Array::Difference(Array arr2)
+{
+	int i = 0, j = 0, k = 0;
+	Array* arr3 = new Array(length + arr2.length);
+
+	int m = length;
+	int n = arr2.length;
+
+	while(i < m && j < n)
+	{
+		if(A[i] < arr2.A[j])
+		{
+			arr3->A[k++] = A[i++];
+		}
+		else if(arr2.A[j] < A[i])
+		{
+			j++;
+		}
+		else
+		{
+			i++;
+			j++;
+		}
+	}
+
+	for(; i < m; i++)
+	{
+		arr3->A[k++] = A[i];
+	}
 
 	return arr3;
 }
@@ -417,16 +498,48 @@ Array* Array::MergeArrays(Array *arr2)
 
 int main()
 {
-	Array arr(5, 5);
-	Array arr2(5, 5);
-	int *arr3;
-	arr.Create();
-	arr.Display();
-	arr2.Create2();
-	arr3 = arr.MergeArrays(arr, arr2);
+	int choice, sz;
+	int x, index;
 
+	printf("Enter the size of the Array: ");
+	scanf_s("%d", &sz);
+	Array *arr1 = new Array(sz);
 
-	cout << arr3 << endl;
+	do
+	{
+		printf("Menu\n");
+		printf("1. Insert\n");
+		printf("2. Delete\n");
+		printf("3. Search\n");
+		printf("4. Sum\n");
+		printf("5. Display\n");
+		printf("6. Exit\n");
+
+		printf("Enter your selection: ");
+		scanf_s("%d", &choice);
+
+		switch(choice)
+		{
+			case 1: cout<<"Enter an element and index: ";
+				cin>>x>>index;
+				arr1->Insert(index, x);
+				break;
+			case 2: cout<<"Enter index: ";
+				cin>>index;
+				x = arr1->DeleteIndex(index);
+				cout<<"Element that was Deleted: "<<x;
+				cout<<endl;
+				break;
+			case 3: cout<<"Enter element to search: ";
+				cin>>x;
+				index = arr1->LinearSearch(x);
+				cout<<"Element is at index: %d\n"<<index;
+				break;
+			case 4: cout<<"Sum is: %d\n"<<arr1->Sum();
+				break;
+			case 5: arr1->Display();
+		}
+	}while(choice < 6);
 
 	return 0;
 }
