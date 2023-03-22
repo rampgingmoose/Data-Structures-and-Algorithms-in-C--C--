@@ -5,7 +5,7 @@ using namespace std;
 
 struct Array
 {
-	int *A;
+	int A[10];
 	int size;
 	int length;
 };
@@ -498,10 +498,16 @@ struct Array* ArrayDifference(struct Array *arr1, struct Array *arr2)
 	return arr3;
 }
 
+
+
 int main()
 {
-	struct Array arr1;
-	int choice;
+	struct Array arr1 = {{3,7,4,9,12,6,1,11,2,10}, 10, 10};
+	struct Array arr2 = {{0}, 12, 12};
+
+	Display(arr1);
+
+	/*int choice;
 	int index;
 	int x;
 
@@ -543,7 +549,7 @@ int main()
 				break;
 			case 5: Display(arr1);
 		}
-	}while(choice < 6);
+	}while(choice < 6);*/
 
 	return 0;
 }

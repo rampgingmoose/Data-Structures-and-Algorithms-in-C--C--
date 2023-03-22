@@ -1,4 +1,4 @@
 ﻿  Source.cpp
-C:\Users\strei\OneDrive\Desktop\C++ Tutorials\Arrays as ADT in C\Source.cpp(25,6): warning C4101: 'index': unreferenced local variable
-C:\Users\strei\OneDrive\Desktop\C++ Tutorials\Arrays as ADT in C\Source.cpp(158): warning C4715: 'Get': not all control paths return a value
-  Arrays as ADT in C.vcxproj -> C:\Users\strei\OneDrive\Desktop\C++ Tutorials\Arrays as ADT in C\x64\Debug\Arrays as ADT in C.exe
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C\Source.cpp(25,6): warning C4101: 'index': unreferenced local variable
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C\Source.cpp(158): warning C4715: 'Get': not all control paths return a value
+  Arrays as ADT in C.vcxproj -> C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C\x64\Debug\Arrays as ADT in C.exe

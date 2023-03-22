@@ -1,3 +1,8 @@
 ﻿  Source.cpp
-C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C++\Source.cpp(305,6): warning C4101: 'temp': unreferenced local variable
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C++\Source.cpp(299,6): warning C4101: 'temp': unreferenced local variable
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C++\Source.cpp(630,6): warning C4101: 'choice': unreferenced local variable
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C++\Source.cpp(630,14): warning C4101: 'sz': unreferenced local variable
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C++\Source.cpp(631,9): warning C4101: 'index': unreferenced local variable
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C++\Source.cpp(631,6): warning C4101: 'x': unreferenced local variable
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C++\Source.cpp(544): warning C4715: 'Array::FindingMissingElementNonNaturalSum': not all control paths return a value
   C++ Tutorials.vcxproj -> C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Arrays as ADT in C++\x64\Debug\C++ Tutorials.exe

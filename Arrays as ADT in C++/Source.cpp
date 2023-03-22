@@ -1,6 +1,4 @@
 #include <iostream>
-#include <cstdio>
-#include <stdlib.h>
 
 using namespace std;
 
@@ -9,7 +7,7 @@ class Array
 private:
 	int *A;
 	int size;
-	int length;
+	int length;	
 
 	void Swap(int *x, int *y);
 
@@ -17,8 +15,8 @@ public:
 	Array()
 	{
 		size = 10;
-		length = 0;
-		A= new int[size];
+		length = 10;
+		A = new int[size] {3,6,8,8,10,12,15,15,15,20};
 	}
 	Array(int sz)
 	{
@@ -52,6 +50,12 @@ public:
 	Array* Union(Array arr2);
 	Array* Intersection(Array arr2);
 	Array* Difference(Array arr2);
+	int FindingMissingElement();
+	int FindingMissingElementNonNaturalSum();
+	void FindingMultipleMissingElements();
+	void FindMultipleMissingElementsUsingHashTable();
+	void FindingDuplicatesInASortedArray();
+	void CountDuplicateElementsInASortedArray();
 
 	~Array()
 	{
@@ -495,51 +499,183 @@ Array* Array::Difference(Array arr2)
 	return arr3;
 }
 
+/**
+ *Finds the missing element in array provided that the array is the sum of first natural numbers.
+ *This means this function can only be used if the array begins with 1 and continues sequentially, e.g. 1,2,3,4,5,etc.
+ */
+int Array::FindingMissingElement()
+{
+	int total = 0;
+
+	for(int i = 0; i < length; i++)
+	{
+		total += A[i];
+	}
+
+	int n = A[length - 1];
+
+	int sumOfNaturalNumbers = (n * (n + 1)) / 2;
+	int missingElement = sumOfNaturalNumbers - total;
+
+	return missingElement;
+}
+
+/**
+ * Finds an element in an array that is NOT the sum of first natural numbers, e.g. 6,7,8,9,10,etc
+ */
+int Array::FindingMissingElementNonNaturalSum()
+{
+	int l = A[0];
+	int h = A[length -1];
+	int diff = l - 0;
+
+	for(int i = 0; i < length; i++)
+	{
+		if(i+diff < l || i+diff > h)
+		{
+			cout<<"there are ";
+			return 0;
+		}
+		else if(A[i] - i != diff)
+		{
+			return i+diff;
+		}
+	}
+}
+
+void Array::FindingMultipleMissingElements()
+{
+	int l = A[0];
+	int h = A[length -1];
+	int diff = l - 0;
+
+	for(int i = 0; i < length; i++)
+	{
+		if(A[i] - i != diff)
+		{
+			while(diff < A[i] - i)
+			{
+				cout<<"missing element: "<<i+diff<<endl;
+				diff++;
+			}
+		}
+	}
+}
+
+/**
+ * \brief Finds all missing elements an array, sorted or unsorted. Utilizes a very simple hash table(or bit setting) to indicate which
+ * elements are present by incrementing the corresponding index in h_table to 1. Any element in h_table with a value of 0 is a missing
+ * element.
+ */
+void Array::FindMultipleMissingElementsUsingHashTable()
+{
+	int l = Min(); //Smallest element of the given array
+	int h = Max(); //Largest element of the given array
+	int h_table[17] = {0}; //Size must be set to the max element in a given array
+	int i;
+
+	for(i = 0; i < length-1; i++)
+	{
+		h_table[A[i]]++; //Will go to the corresponding index in h_table and increment the value. E.g A[6] = 8 which == h_table[8]++
+	}
+	for(i = l; i <= h; i++)
+	{
+		if(h_table[i] == 0)
+		{
+			cout << "missing element: "<< i << endl;
+		}
+	}
+}
+
+/**
+ * \brief Finds duplicate elements in a given array, Array must be sorted. Function will not print out multiple duplicates
+ */
+void Array::FindingDuplicatesInASortedArray()
+{
+	int lastDuplicate = 0;
+
+	for(int i = 0; i < length -1; i++)
+	{
+		if(A[i] == A[i+1] && A[i] != lastDuplicate) //if the current element == lastDuplicate that element will be skipped
+		{
+			cout << "duplicate element found: " << A[i] << endl;
+			lastDuplicate = A[i]; //duplicate element stored in lastDuplicate
+		}
+	}
+}
+
+/**
+ * \brief Finds and counts duplicates in a sorted array. Once i has found a duplicate, j will be set to i and increment as long as the element
+ * at each index is equal to each other. Once they are unequal the loop will break and i will be set to j-1 as you want i to skip the elements
+ * j has already looped through to prevent repeats. The time complexity is O(n) despite the nested while loop as only a small portion of the
+ * array will be looped through resulting in negligible time taken. 
+ */
+void Array::CountDuplicateElementsInASortedArray()
+{
+	int i, j;
+
+	for(i =0; i < length - 1; i++)
+	{
+		if(A[i]==A[i+1])
+		{
+			j = i+1;
+
+			while(A[j] == A[i])
+			{
+				j++;
+			}
+			cout << A[i] <<" is appearing " << j-i << " times" << endl;
+			i = j-1;
+		}
+	}
+}
+
 
 int main()
 {
 	int choice, sz;
 	int x, index;
 
-	printf("Enter the size of the Array: ");
-	scanf_s("%d", &sz);
-	Array *arr1 = new Array(sz);
+	//cout<<"enter the size of the array: ";
+	//cin>>sz;
+	Array *arr1 = new Array();
+	arr1->CountDuplicateElementsInASortedArray();
 
-	do
+	/*do
 	{
-		printf("Menu\n");
-		printf("1. Insert\n");
-		printf("2. Delete\n");
-		printf("3. Search\n");
-		printf("4. Sum\n");
-		printf("5. Display\n");
-		printf("6. Exit\n");
+		cout<<"menu"<<endl;
+		cout<<"1. insert"<<endl;
+		cout<<"2. delete"<<endl;
+		cout<<"3. search"<<endl;
+		cout<<"4. sum"<<endl;
+		cout<<"5. display"<<endl;
+		cout<<"6. exit"<<endl;
 
-		printf("Enter your selection: ");
-		scanf_s("%d", &choice);
+		cout<<"enter you selection: ";
+		cin>>choice;
 
 		switch(choice)
 		{
-			case 1: cout<<"Enter an element and index: ";
+			case 1: cout<<"enter an element and index: ";
 				cin>>x>>index;
 				arr1->Insert(index, x);
 				break;
-			case 2: cout<<"Enter index: ";
+			case 2: cout<<"enter index: ";
 				cin>>index;
 				x = arr1->DeleteIndex(index);
-				cout<<"Element that was Deleted: "<<x;
+				cout<<"element that was deleted: "<<x;
 				cout<<endl;
 				break;
-			case 3: cout<<"Enter element to search: ";
+			case 3: cout<<"enter element to search: ";
 				cin>>x;
 				index = arr1->LinearSearch(x);
-				cout<<"Element is at index: %d\n"<<index;
+				cout<<"element is at index: "<<index;
 				break;
-			case 4: cout<<"Sum is: %d\n"<<arr1->Sum();
+			case 4: arr1->FindingMultipleMissingElements();
 				break;
 			case 5: arr1->Display();
 		}
-	}while(choice < 6);
+	}while(choice < 6);*/
 
 	return 0;
 }
