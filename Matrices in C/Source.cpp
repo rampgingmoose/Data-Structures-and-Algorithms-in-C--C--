@@ -1,26 +1,27 @@
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
 
 using namespace std;
 
 struct Matrix
 {
-	int A[10];
+	int *A;
 	int n;
 };
 
 void Set(struct Matrix *m, int i, int j, int x)
 {
-	if(i==j)
+	if(i >= j)
 	{
-		m->A[i-1] = x;
+		m->A[m->n*(j-1) + (j-2)*(j-1)/2 + i-j] = x;
 	}
 }
 
 int Get(struct Matrix m, int i, int j)
 {
-	if(i==j)
-		return m.A[i-1];
+	if(i>=j)
+		return m.A[m.n*(j-1) + (j-2)*(j-1)/2 + i-j];
 	else
 		return 0;
 }
@@ -30,13 +31,13 @@ void Display(struct Matrix m)
 	int i;
 	int j;
 
-	for(i = 0; i < m.n; i++)
+	for(i = 1; i <= m.n; i++)
 	{
-		for(j = 0; j < m.n; j++)
+		for(j = 1; j <= m.n; j++)
 		{
-			if(i == j)
+			if(i >= j)
 			{
-				printf("%d ", m.A[i]);
+				printf("%d ", m.A[m.n*(j-1) + (j-2)*(j-1)/2 + i-j]);
 			}
 			else
 			{
@@ -50,11 +51,24 @@ void Display(struct Matrix m)
 int main()
 {
 	struct Matrix m;
-	m.n = 4;
+	int i, j, x;
 
-	Set(&m,1,1,5); Set(&m,2,2,8); Set(&m,3,3,9); Set(&m,4,4,12);
+	printf("Enter Dimension");
+	scanf_s("%d", &m.n);
+	m.A = (int *)malloc(m.n*(m.n-1)/2 * 
+		sizeof(int)); //creates a dynamic array on heap with a size equal to the amount of none zero elements in the matrix
 
+	printf("enter all elements");
+	for(i = 1; i<=m.n; i++)
+	{
+		for(j = 1; j<=m.n; j++)
+		{
+			scanf_s("%d", &x);
+			Set(&m,i,j,x);
+		}
+	}
+	printf(" ");
 	Display(m);
-	printf("%d \n", Get(m, 2, 2));
+
 	return 0;
 }
