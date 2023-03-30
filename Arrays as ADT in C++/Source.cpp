@@ -16,7 +16,7 @@ public:
 	{
 		size = 10;
 		length = 10;
-		A = new int[size] {3,6,8,8,10,12,15,15,15,20};
+		A = new int[size] {8,5,2,8,9,3,21,16,25,1};
 	}
 	Array(int sz)
 	{
@@ -56,6 +56,12 @@ public:
 	void FindMultipleMissingElementsUsingHashTable();
 	void FindingDuplicatesInASortedArray();
 	void CountDuplicateElementsInASortedArray();
+	void CountDuplicatesInArraysUsingHashing();
+	void FindingDuplicatesInUnsortedArrays();
+	void FindPairOfElementsWithSumK();
+	void FindPairOfElementsWithSumKUsingHashing();
+	void FindPairOfElementsWithSumKSortedArray();
+	void FindMinAndMaxInSingleScan();
 
 	~Array()
 	{
@@ -563,7 +569,7 @@ void Array::FindingMultipleMissingElements()
 }
 
 /**
- * \brief Finds all missing elements an array, sorted or unsorted. Utilizes a very simple hash table(or bit setting) to indicate which
+ * \brief Finds all missing elements in an array, sorted or unsorted. Utilizes a very simple hash table(or bit setting) to indicate which
  * elements are present by incrementing the corresponding index in h_table to 1. Any element in h_table with a value of 0 is a missing
  * element.
  */
@@ -571,10 +577,10 @@ void Array::FindMultipleMissingElementsUsingHashTable()
 {
 	int l = Min(); //Smallest element of the given array
 	int h = Max(); //Largest element of the given array
-	int h_table[17] = {0}; //Size must be set to the max element in a given array
+	int h_table[17] = {0}; //Size must be set to largest element in A[] + 1, otherwise will cause seg fault 
 	int i;
 
-	for(i = 0; i < length-1; i++)
+	for(i = 0; i < length; i++)
 	{
 		h_table[A[i]]++; //Will go to the corresponding index in h_table and increment the value. E.g A[6] = 8 which == h_table[8]++
 	}
@@ -630,6 +636,145 @@ void Array::CountDuplicateElementsInASortedArray()
 	}
 }
 
+/**
+ * \brief Finds all duplicate elements in an array, sorted or unsorted. Utilizes a very simple hash table(or bit setting) to indicate which
+ * elements are present by incrementing the corresponding index in h_table to 1. Any element in h_table with a value greater than 1 is
+ * a duplicate element, and the value found at h_table[i] is the amount of times it appears.
+ */
+void Array::CountDuplicatesInArraysUsingHashing()
+{
+	int l = Min();
+	int h = Max();
+	int h_table[21] = {0}; //Size must be set to largest element in A[] + 1, otherwise will cause seg fault 
+
+	for(int i = 0; i < length; i++)
+	{
+		h_table[A[i]]++;
+	}
+	for(int i = 0; i <= h; i++)
+	{
+		if(h_table[i] > 1)
+			cout<<"duplicate element: "<<i<<" appears: "<<h_table[i]<<" times"<<endl;
+	}
+}
+
+/**
+ * \brief Finds duplicates in an unsorted array, however the time complexity is Quadratic Time. Therefore this method is not recommended
+ * and is simply here to better understand arrays. This method involves measuring each element at A[i] to every other element beyond it in
+ * the array using a second index(j) to compare the two elements. Using a hash table is recommended instead.
+ */
+void Array::FindingDuplicatesInUnsortedArrays()
+{
+	for(int i=0; i < length-1; i++)
+	{
+		int count = 1;
+
+		if(A[i] != -1)
+		{
+			for(int j = i+1; j < length; j++)
+			{
+				if(A[i]==A[j])
+				{
+					count++;
+					A[j] = -1; //This is to prevent an element from being counted twice 
+				}
+			}
+		}
+
+		if(count>1)
+		{
+			cout<<"duplicate element: "<<A[i]<< " appears: "<<count<< " times."<<endl;
+		}
+	}
+}
+
+/**
+ * \brief Finds a pair of elements whose sum is equal to variable k. This function does not account for duplicates; so if there are duplicate
+ * elements that satisfy the condition, they will appear as many times as there are duplicates. The time complexity of thisfunciton is
+ * Quadratic time so it is not a recommended method to utilize.
+ */
+void Array::FindPairOfElementsWithSumK()
+{
+	int k = 28;
+	for(int i = 0; i < length-1; i++)
+	{
+		for(int j = i+1; j<length; j++)
+		{
+			if(A[i] + A[j] == k)
+			{
+				cout<<A[i]<<"+"<<A[j]<<"="<<k<<endl;
+			}
+		}
+	}
+}
+
+/**
+ * \brief Utilizes a simple hash table to find potential matching pairs with a sum of k. h_table[k-A[i]] will go to the resulting index in
+ * h_table, if that element has been found then you have a matching pair. That index will be incremented and will continue to loop. Multiple
+ * pairs can be found.
+ */
+void Array::FindPairOfElementsWithSumKUsingHashing()
+{
+	int k = 28;
+	int h = Max();
+	int h_table[21] = {0}; //Size must be set to largest element in A[] + 1, otherwise will cause seg fault
+
+	for(int i = 0; i < length; i++)
+	{
+		if(h_table[k-A[i]] >= 0 && h_table[k-A[i]] != 0) //check for negative index then check to see if element at h_table[k-A[i]] has been found
+		{
+			cout<<A[i]<<"+"<<k-A[i]<<" is equal to k"<<endl;
+		}
+
+		h_table[A[i]]++;
+	}
+}
+
+/**
+ * \brief Since this is a sorted array we know the min element in at A[0] and the max element is at length-1. Therefore, we can take two
+ * indices i and j and set them to the min and max elements respectively. While i is less than j check to see if A[i] + A[j] is equal to k
+ * if it is increment i and decrement j. If the result is less than k increment i, as a larger element at i + j may equal k, conversely
+ * if A[i] + A[j] is greater than k then  decrement j as a smaller element at j may equal k. Time Complexity is Linear Time as each index
+ * is only scanning half of the array.
+ */
+void Array::FindPairOfElementsWithSumKSortedArray()
+{
+	int k = 31;
+	int i = 0;
+	int j = length-1;
+
+	while(i<j)
+	{
+		if(A[i]+A[j] == k)
+		{
+			cout<<A[i]<<"+"<<A[j]<<" is equal to k"<<endl;
+			i++;
+			j--;
+		}
+		else if (A[i]+A[j] < k)
+			i++;
+		else
+			j--;
+	}
+}
+
+void Array::FindMinAndMaxInSingleScan()
+{
+	int min = A[0];
+	int max = A[0];
+
+	for(int i = 0; i < length; i++)
+	{
+		if(A[i] < min)
+			min = A[i];
+		else if(A[i] > max)
+			max = A[i];
+	}
+
+	cout<<"minimum element is: "<<min<<endl;
+	cout<<"maximum element is: "<<max<<endl;
+}
+
 
 int main()
 {
@@ -639,7 +784,7 @@ int main()
 	//cout<<"enter the size of the array: ";
 	//cin>>sz;
 	Array *arr1 = new Array();
-	arr1->CountDuplicateElementsInASortedArray();
+	arr1->FindMinAndMaxInSingleScan();
 
 	/*do
 	{
