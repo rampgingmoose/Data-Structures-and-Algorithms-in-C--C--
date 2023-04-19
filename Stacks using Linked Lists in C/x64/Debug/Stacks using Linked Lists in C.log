@@ -1,0 +1,4 @@
+﻿  Source.cpp
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Stacks using Linked Lists in C\Source.cpp(89,17): warning C4101: 'st': unreferenced local variable
+C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Stacks using Linked Lists in C\Source.cpp(129,29): warning C4267: 'initializing': conversion from 'size_t' to 'long', possible loss of data
+  Stacks using Linked Lists in C.vcxproj -> C:\Users\strei\OneDrive\Documents\Real GitHub\Data-Structures-and-Algorithms-in-C--C--\Stacks using Linked Lists in C\x64\Debug\Stacks using Linked Lists in C.exe
