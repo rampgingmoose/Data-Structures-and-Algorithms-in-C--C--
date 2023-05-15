@@ -4,7 +4,7 @@
 
 struct Node
 {
-    char data;
+    int data;
     struct Node *next;
 }*top=NULL;
 
@@ -13,7 +13,7 @@ struct Node
  * in the List. This is done because inserting before the first Node takes Constant Time, while inserting after the
  * last Node would take Linear Time. This is due to having to traverse the entire stack to find the last Node.
  */
-void Push(char x)
+void Push(int x)
 {
     struct Node *temp = (struct Node *)malloc(sizeof(struct Node));
 
@@ -32,7 +32,7 @@ void Push(char x)
  */
 char Pop()
 {
-    char x = -1;
+    int x = -1;
     struct Node *temp = top;
 
     if(top == NULL)
@@ -63,7 +63,7 @@ void Display()
 int Peek(int index)
 {
     struct Node *temp;
-    char x = -1;
+    int x = -1;
     if(top == NULL)
         printf("Stack is Empty\n");
     else
@@ -150,13 +150,49 @@ char * InfixToPostfix(const char *infix)
     return postfix;
 }
 
+int EvaluatePostfixExpression(const char *postfix)
+{
+    int x1, x2, result;
+
+    for(int i=0; postfix[i] != '\0'; i++)
+    {
+        if(isOperand(postfix[i]))
+            Push(postfix[i]-'0');
+        else
+        {
+            x2 = Pop(); x1 = Pop();
+            switch(postfix[i])
+            {
+                case '+': 
+                    result = x1 + x2;
+                    Push(result);
+                    break;
+                case '-':
+                    result = x1 - x2;
+                    Push(result);
+                    break;
+                case '*':
+                    result = x1 * x2;
+                    Push(result);
+                    break;
+                case '/':
+                    result = x1 / x2;
+                    Push(result);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    return top->data;
+}
+
 int main()
 {
-    const char *infix = "a+b*c-d/e";
-    Push(' ');
+    const char *postfix = "35*62/+4-";
 
-    char *postfix = InfixToPostfix(infix);
-    printf("%s", postfix);
+    printf("%d",EvaluatePostfixExpression(postfix));
 
     return 0;
 }
